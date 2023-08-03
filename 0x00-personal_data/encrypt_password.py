@@ -5,7 +5,7 @@ Module for handling hashed password
 import bcrypt
 
 
-def hash_password(password: str) -> bcrypt:
+def hash_password(password: str) -> bytes:
     """
 
     Args:
