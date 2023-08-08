@@ -4,6 +4,7 @@ Module of auth class
 """
 from flask import request
 from typing import List, TypeVar
+import fnmatch
 
 
 class Auth(object):
@@ -22,17 +23,14 @@ class Auth(object):
         Returns:
           - True if is authenticated otherwise false
         """
-        if path is None or excluded_paths is None or len(excluded_paths) == 0:
+        if path is None:
             return True
 
-        if path[-1] != '/':
-            path += '/'
+        if excluded_paths is None or not excluded_paths:
+            return True
 
-        for paths in excluded_paths:
-            if paths.endswith('*'):
-                if path.startswith(paths[:-1]):
-                    return False
-            elif path == paths:
+        for excluded_path in excluded_paths:
+            if fnmatch.fnmatch(path, excluded_path):
                 return False
 
         return True
