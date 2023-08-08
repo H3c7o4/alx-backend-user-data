@@ -60,4 +60,4 @@ class Auth(object):
         Returns:
           - Any type
         """
-        return request
+        return None
