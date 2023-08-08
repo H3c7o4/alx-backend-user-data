@@ -7,6 +7,7 @@ from models.user import User
 from typing import Tuple, TypeVar
 import binascii
 import base64
+import re
 
 
 class BasicAuth(Auth):
@@ -73,15 +74,17 @@ class BasicAuth(Auth):
         Returns:
           - Tuple
         """
-        if decoded_base64_authorization_header is None:
-            return (None, None)
-        elif type(decoded_base64_authorization_header) != str:
-            return (None, None)
-        elif not(':' in decoded_base64_authorization_header):
-            return (None, None)
-        else:
-            li_dec = decoded_base64_authorization_header.split(':')
-            return (li_dec[0], li_dec[1])
+        if type(decoded_base64_authorization_header) == str:
+            pattern = r'(?P<user>[^:]+):(?P<password>.+)'
+            field_match = re.fullmatch(
+                pattern,
+                decoded_base64_authorization_header.strip(),
+            )
+            if field_match is not None:
+                user = field_match.group('user')
+                password = field_match.group('password')
+                return user, password
+        return None, None
 
     def user_object_from_credentials(
             self,
