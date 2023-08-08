@@ -49,7 +49,7 @@ class BasicAuth(Auth):
             return None
         elif type(base64_authorization_header) != str:
             return None
-        
+
         try:
             data = base64.b64decode(
                     base64_authorization_header,
