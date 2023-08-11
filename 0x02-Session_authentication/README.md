@@ -1,5 +1,6 @@
 # 0x02. Session authentication
 
+
  - What authentication means
  - What session authentication means
  - What Cookies are
