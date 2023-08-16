@@ -5,6 +5,8 @@ Module for _hash_password
 import bcrypt
 import uuid
 from sqlalchemy.orm.exc import NoResultFound
+from typing import Union
+
 from db import DB
 from user import User
 
@@ -91,5 +93,23 @@ class Auth:
                 session_id = _generate_uuid()
                 self._db.update_user(user_id=user.id, session_id=session_id)
                 return session_id
+        except NoResultFound:
+            return None
+
+    def get_user_from_session_id(session_id: str) -> Union[User, None]:
+        """
+
+        Args:
+          - session_id(Str): session_id of the user
+
+        Returns:
+          - The associated user or None
+        """
+        try:
+            user = self._db.find_user_by(session_id=session_id)
+
+            if user.session_id:
+                return user
+            return None
         except NoResultFound:
             return None
