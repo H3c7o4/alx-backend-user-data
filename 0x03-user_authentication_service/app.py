@@ -52,11 +52,11 @@ def logout():
     """ Log a user out of the session
     """
     session_id = request.cookies.get('session_id')
-    user = AUTH.get_user_from_session_id(session__id)
+    user = AUTH.get_user_from_session_id(session_id)
 
     if user:
         AUTH.destroy_session(user.id)
-        return redirect(url_for('welcome'))
+        return redirect('/')
 
     abort(403)
 
